@@ -25,11 +25,13 @@
                 <form method="GET" action="/getCountiesCities">
                     @csrf
                     <p>Select a state from the dropdown:</p>
-                    <select name="state">
+                    <select name="state" required>
                         @foreach ($states as $state)
-                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                            <option value="{{ $state->name }}">{{ $state->name }}</option>
                         @endforeach
                     </select>
+                    <p>Enter a valid zipcode (OPTIONAL):</p>
+                    <input type="text" name="zip" pattern="[0-9]{5}" title="5 digit zipcode" />
                     <input type="submit" value="Submit" />
                 </form>
 

@@ -27,7 +27,7 @@ class CitySeeder extends Seeder
                 'county_name' => $data['county_name'],
                 'zip' => $data['zip'],
                 'city_name' => $data['city_name'],
-                'state_id' => State::inRandomOrder()->first()->id
+                'state_id' => $data['state_id']
             ));
         }
     }

@@ -19,39 +19,88 @@ class StateController extends Controller
 
     // takes request from form to retrieve data using selected state
     public function getCounties(Request $request){
-        $state = $request->input('state');
 
-        $validated = $request->validate(['state' => 'required|string']);
+        $validated = $request->validate([
+            'state' => 'required|string',
+            'zip' => 'nullable|string|size:5'
+            ]);
 
-        $rows = DB::table('cities')
-            ->join('states', 'cities.state_id', '=', 'states.id')
-            ->select(
-                'states.name as state',
-                'county_name',
-                'city_name',
-                'zip'
-            )
-            ->where('states.id', $validated)
-            ->get();
+        if (!empty($validated['zip'])){
+            try{
+                $rows = DB::table('cities')
+                    ->join('states', 'cities.state_id', '=', 'states.id')
+                    ->select(
+                        'states.name as state',
+                        'county_name',
+                        'city_name',
+                        'zip'
+                    )
+                    ->where([['states.name', $validated['state']],['zip', $validated['zip']]])
+                    ->get();
 
-        $result = [
-            'state' => $rows->first()->state ?? null,
-            'counties' => $rows
-                ->groupBy('county_name')
-                ->map(function ($items, $county) {
-                    return [
-                        'name' => $county,
-                        'cities' => $items->map(function ($row) {
+                if(empty($rows[0])){
+                    $state = State::where('name', '=', $validated['state'])->get();
+                    return response()->json([
+                        'state' => $state,
+                        'counties' => []
+                    ], 200);
+                }
+                else {
+                    $result = [
+                        'state' => $rows->first()->state ?? null,
+                        'counties' => $rows
+                            ->groupBy('county_name')
+                            ->map(function ($items, $county) {
+                                return [
+                                    'name' => $county,
+                                ];
+                            })
+                            ->values()
+                        ]; 
+    
+                    return response()->json([$result], 200);
+                }
+            } catch (\Exception $e){
+                return response()->json(['Error message', $e->getMessage()], 400);
+            }
+
+        } else{
+            try {
+                $rows = DB::table('cities')
+                    ->join('states', 'cities.state_id', '=', 'states.id')
+                    ->select(
+                        'states.name as state',
+                        'county_name',
+                        'city_name',
+                        'zip'
+                    )
+                    ->where('states.name', $validated['state'])
+                    ->get();
+    
+                 $result = [
+                    'state' => $rows->first()->state ?? null,
+                    'counties' => $rows
+                        ->groupBy('county_name')
+                        ->map(function ($items, $county) {
                             return [
-                                'name' => $row->city_name,
-                                'zip' => $row->zip
+                                'name' => $county,
+                                'cities' => $items->map(function ($row) {
+                                    return [
+                                        'name' => $row->city_name,
+                                        'zip' => $row->zip
+                                    ];
+                                })
                             ];
                         })
-                    ];
-                })
-                ->values()
-        ];
-
-        return response()->json([$result], 200);
+                        ->values()
+                ]; 
+                
+                return response()->json([$result], 200);
+    
+            }
+            catch (\Exception $e) {
+                return response()->json(['Error message', $e->getMessage()], 400);
+            }
+        }
     }
 }
