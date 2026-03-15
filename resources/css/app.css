@@ -29,5 +29,10 @@ select {
 }
 
 h1 {
-    @apply text-base/7 font-semibold text-white text-center mbe-3
+    @apply text-lg font-semibold text-white text-center mbe-3
+}
+
+form {
+    display: flex;
+    flex-direction: column;
 }

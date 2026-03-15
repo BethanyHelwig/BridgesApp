@@ -17,14 +17,7 @@ class StateController extends Controller
         return view('welcome', ['states' => $records]);
     }
 
-    public function show($state){
-        // route --> /state/{id}
-        // fetch a single record & and pass into the show view
-        $records = City::orderBy('county_name', 'desc')->get();
-
-        return view('show', ['cities' => $records]);
-    }
-
+    // takes request from form to retrieve data using selected state
     public function getCounties(Request $request){
         $state = $request->input('state');
 
