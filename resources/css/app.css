@@ -9,3 +9,25 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+input[type="submit"] {
+    @apply rounded-md bg-slate-700 px-3 py-2 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500;
+}
+
+input[type="submit"]:hover {
+    cursor: pointer;
+    @apply bg-slate-500
+}
+
+input[type="text"],
+input[type="numeric"] {
+    @apply bg-[#FFFFFF] text-[#292929] p-1 rounded-sm
+}
+
+select {
+    @apply rounded-md bg-gray-700 p-2 my-2
+}
+
+h1 {
+    @apply text-base/7 font-semibold text-white text-center mbe-3
+}
