@@ -32,17 +32,16 @@ class StateController extends Controller
                     ->select(
                         'states.name as state',
                         'county_name',
-                        'city_name',
-                        'zip'
                     )
                     ->where([['states.name', $validated['state']],['zip', $validated['zip']]])
                     ->get();
 
                 if(empty($rows[0])){
-                    $state = State::where('name', '=', $validated['state'])->get();
+                    $state = State::where('name', '=', $validated['state'])
+                        ->select('name')
+                        ->get();
                     return response()->json([
-                        'state' => $state,
-                        'counties' => []
+                        'state' => $state->first()->name,
                     ], 200);
                 }
                 else {
