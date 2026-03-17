@@ -16,7 +16,8 @@ DB_DATABASE, DB_USERNAME, and DB_PASSWORD to reference your own local instance o
 Next, use terminal/CLI to move to the directory and run the following
 - 'npm install'
 - 'composer install'
-- 'php artisan migrate --seed' (NOTE: you must have changed the .env.example to .env first)
+- 'php artisan key:generate' (NOTE: you must change the .env.example to .env first)
+- 'php artisan migrate --seed' (NOTE: .env must contain your DB information first)
 
 To start, use terminal/CLI to move to the directory of the project and run "composer run dev"
 
