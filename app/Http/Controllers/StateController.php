@@ -32,6 +32,8 @@ class StateController extends Controller
                     ->select(
                         'states.name as state',
                         'county_name',
+                        'city_name',
+                        'zip'
                     )
                     ->where([['states.name', $validated['state']],['zip', '!=', $validated['zip']]])
                     ->get();
@@ -45,17 +47,23 @@ class StateController extends Controller
                     ], 200);
                 }
                 else {
-                    $result = [
-                        'state' => $rows->first()->state ?? null,
-                        'counties' => $rows
-                            ->groupBy('county_name')
-                            ->map(function ($items, $county) {
-                                return [
-                                    'name' => $county,
-                                ];
-                            })
-                            ->values()
-                        ]; 
+                 $result = [
+                    'state' => $rows->first()->state ?? null,
+                    'counties' => $rows
+                        ->groupBy('county_name')
+                        ->map(function ($items, $county) {
+                            return [
+                                'name' => $county,
+                                'cities' => $items->map(function ($row) {
+                                    return [
+                                        'name' => $row->city_name,
+                                        'zip' => $row->zip
+                                    ];
+                                })
+                            ];
+                        })
+                        ->values()
+                    ];
     
                     return response()->json([$result], 200);
                 }
