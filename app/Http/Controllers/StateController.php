@@ -33,7 +33,7 @@ class StateController extends Controller
                         'states.name as state',
                         'county_name',
                     )
-                    ->where([['states.name', $validated['state']],['zip', $validated['zip']]])
+                    ->where([['states.name', $validated['state']],['zip', '!=', $validated['zip']]])
                     ->get();
 
                 if(empty($rows[0])){
