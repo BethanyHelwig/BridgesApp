@@ -13,9 +13,10 @@ The following must already be installed on your computer:
 Change the ".env.example" file to just ".env." Inside, you will need to input the 
 DB_DATABASE, DB_USERNAME, and DB_PASSWORD to reference your own local instance of postgres.
 
-Upon first initialization, use terminal/CLI to move to the directory and run the following
+Next, use terminal/CLI to move to the directory and run the following
 - 'npm install'
-- 'php artisan migrate'
+- 'composer install'
+- 'php artisan migrate --seed' (NOTE: you must have changed the .env.example to .env first)
 
 To start, use terminal/CLI to move to the directory of the project and run "composer run dev"
 
