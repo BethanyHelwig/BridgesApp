@@ -27,8 +27,8 @@ class StateController extends Controller
 
         if (!empty($validated['zip'])){
             try{
-                $rows = DB::table('cities')
-                    ->join('states', 'cities.state_id', '=', 'states.id')
+
+                $rows = City::join('states', 'cities.state_id', '=', 'states.id')
                     ->select(
                         'states.name as state',
                         'county_name',
@@ -37,6 +37,17 @@ class StateController extends Controller
                     )
                     ->where([['states.name', $validated['state']],['zip', '!=', $validated['zip']]])
                     ->get();
+
+                // $rows = DB::table('cities')
+                //     ->join('states', 'cities.state_id', '=', 'states.id')
+                //     ->select(
+                //         'states.name as state',
+                //         'county_name',
+                //         'city_name',
+                //         'zip'
+                //     )
+                //     ->where([['states.name', $validated['state']],['zip', '!=', $validated['zip']]])
+                //     ->get();
 
                 if(empty($rows[0])){
                     $state = State::where('name', '=', $validated['state'])
@@ -73,8 +84,8 @@ class StateController extends Controller
 
         } else{
             try {
-                $rows = DB::table('cities')
-                    ->join('states', 'cities.state_id', '=', 'states.id')
+
+                $rows = City::join('states', 'cities.state_id', '=', 'states.id')
                     ->select(
                         'states.name as state',
                         'county_name',
@@ -83,6 +94,17 @@ class StateController extends Controller
                     )
                     ->where('states.name', $validated['state'])
                     ->get();
+
+                // $rows = DB::table('cities')
+                //     ->join('states', 'cities.state_id', '=', 'states.id')
+                //     ->select(
+                //         'states.name as state',
+                //         'county_name',
+                //         'city_name',
+                //         'zip'
+                //     )
+                //     ->where('states.name', $validated['state'])
+                //     ->get();
     
                  $result = [
                     'state' => $rows->first()->state ?? null,
