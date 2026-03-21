@@ -21,21 +21,32 @@
     </head>
     <body class="bg-[#202329] text-[#f5f5f5] dark:bg-[#202329] flex p-6 lg:p-8 items-center min-h-screen flex-col">
         <div>
-            <h1>Bridges Mini Project</h2>
-                <form method="GET" action="/getCountiesCities">
+            <h1>Bridges Mini Project</h1>
+            <h1>FIND LOCATIONS</h1>
+                <form method="GET" action="/getCountiesCities" class="mb-10">
                     @csrf
-                    <p>Select a state from the dropdown:</p>
+                    <label for="name">Select a state from the dropdown:</label>
                     <select name="state" required>
                         @foreach ($states as $state)
                             <option value="{{ $state->name }}">{{ $state->name }}</option>
                         @endforeach
                     </select>
-                    <p>Enter a valid zipcode (OPTIONAL):</p>
+
+                    <label for="zip">Enter a valid zipcode (OPTIONAL):</label>
                     <input type="text" name="zip" pattern="[0-9]{5}" title="5 digit zipcode" />
                     <input type="submit" value="Submit" />
                 </form>
 
-            </form>
+            <h1>NEW STATE FORM</h1>
+                <form method="POST" action="/createState">
+                    @csrf
+                    <label for="name">Input a new state to POST:</label>
+                    <input type="text" name="name" required />
+
+                    <label for="abbreviation">Inpute a two character abbreviation:</label>
+                    <input type="text" pattern="[A-Z]{2}" name="abbreviation" required />
+                    <input type="submit" value="Submit">
+                </form>
         </div>
 
         @if (Route::has('login'))

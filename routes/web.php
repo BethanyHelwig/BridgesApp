@@ -5,3 +5,4 @@ use App\Http\Controllers\StateController;
 
 Route::get('/', [StateController::class, 'index']);
 Route::get('/getCountiesCities', [StateController::class, 'getCounties']);
+Route::post('/createState',[StateController::class, 'createState']);
